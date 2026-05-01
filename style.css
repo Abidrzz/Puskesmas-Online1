@@ -1,0 +1,74 @@
+/* 1. Reset & Background */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(rgba(22, 160, 133, 0.7), rgba(44, 62, 80, 0.8)), 
+                url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1350&q=80');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+/* 2. Kotak Putih (Card) */
+.card, .container {
+    background: white !important; /* Memaksa warna putih muncul */
+    padding: 35px;
+    border-radius: 19px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    width: 100%;
+    max-width: 410px;
+    text-align: center;
+    display: block !important; /* Memastikan kotak tidak hilang */
+    position: relative;
+    z-index: 10;
+}
+
+/* 3. Menangani Elemen yang Hilang */
+#step-mulai, #step-menu, #step-data, #step-gejala, #step-selesai {
+    display: block; /* Default awal muncul */
+}
+
+.hidden {
+    display: none !important; /* Hanya yang ada class hidden yang hilang */
+}
+
+/* 4. Tombol agar terlihat Jelas */
+button {
+    width: 100%;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 10px;
+    border: none;
+    background-color: #16a085; /* Hijau Puskesmas */
+    color: white !important;
+    font-weight: bold;
+    font-size: 20px;
+    cursor: pointer;
+    display: block;
+}
+
+button:hover {
+    background-color: #1abc9c;
+}
+
+/* 5. Teks Judul */
+h2 {
+    color: #16a085;
+    font-size: 34px;
+    margin-top: 0;
+    font-weight: bold;
+}
+
+p {
+    font-size: 20px;
+    color: #333;
+}
+hr {
+    border: 0;
+    border-top: 1px solid #eee;
+    margin: 20px 0;
+}

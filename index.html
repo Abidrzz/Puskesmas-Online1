@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Antrian Puskesmas - Sesuai Flowchart</title>
+    <link rel="stylesheet" href="style.css">
+<body>
+    
+    <div class="card">
+        <h2>Puskesmas Online</h2>
+        <hr>
+
+       <div id="step-selesai" class="hidden">
+        <div class="ticket" style="border: 2px dashed #16a085; padding: 20px; margin-bottom: 20px;">
+            <p id="label-status" style="font-weight: bold; color: #e74c3c;"></p>
+            <h1 id="no-antrian" style="font-size: 60px; margin: 10px 0; color: #333;"></h1>
+            <p id="tujuan-poli" style="font-size: 18px;"></p>
+        </div>
+
+        <button onclick="window.print()" style="background-color: #27ae60; margin-bottom: 10px;">
+            Cetak Nomor Antrian
+        </button>
+
+        <button onclick="location.reload()" style="background-color: #7f8c8d;">
+            Selesai
+        </button>
+    </div>
+
+    <div id="step-mulai">
+        <p>Selamat Datang. Silahkan pilih:</p>
+        <button onclick="lanjutMenu()">Daftar (YA)</button>
+        <button onclick="location.reload()">Keluar (NO)</button>
+    </div>
+        <div id="step-menu" class="hidden">
+            <p><strong>Pilih Menu:</strong> Apakah kondisi pasien darurat?</p>
+            <button onclick="keIGD('Darurat Langsung')">YA (Ke IGD)</button>
+            <button onclick="isiData()">TIDAK (Daftar Poli)</button>
+        </div>
+
+        <div id="step-data" class="hidden">
+            <h3>Isi Data Diri</h3>
+            <input type="text" id="nama" placeholder="Input Nama">
+            <input type="number" id="usia" placeholder="Input Usia">
+            <button onclick="validasiData()">Lanjut ke Gejala</button>
+        </div>
+
+        <div id="step-gejala" class="hidden">
+            <h3>Pilih Gejala</h3>
+            <p>Seberapa parah keluhan Anda? (1-5)</p>
+            <input type="range" id="skala" min="1" max="5" value="1" oninput="this.nextElementSibling.value = this.value">
+            <output>1</output>
+            <button onclick="cekSkala()">Proses Antrian</button>
+        </div>
+
+        <div id="step-selesai" class="hidden">
+            <div class="ticket">
+                <p id="label-status" style="font-weight: bold; color: #c0392b;"></p>
+                <h1 id="no-antrian" style="font-size: 50px; margin: 10px 0;"></h1>
+                <p id="tujuan-poli"></p>
+                <button onclick="location.reload()" style="background: #00ac42;">Selesai</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Jalur Flowchart: Mulai -> Daftar/Keluar
+        function lanjutMenu() {
+            document.getElementById('step-mulai').classList.add('hidden');
+            document.getElementById('step-menu').classList.remove('hidden');
+        }
+
+        // Jalur Flowchart: Apakah Darurat -> YA -> Input Nama -> Ruang IGD
+        function keIGD(alasan) {
+            let nama = document.getElementById('nama').value || "Pasien";
+            document.getElementById('step-menu').classList.add('hidden');
+            document.getElementById('step-gejala').classList.add('hidden');
+            document.getElementById('step-selesai').classList.remove('hidden');
+            
+            document.getElementById('label-status').innerText = "STATUS: DARURAT (" + alasan + ")";
+            document.getElementById('no-antrian').innerText = "IGD";
+            document.getElementById('tujuan-poli').innerText = "Silahkan Menuju Ruang IGD";
+        }
+
+        // Jalur Flowchart: Apakah Darurat -> NO -> Isi Data Diri
+        function isiData() {
+            document.getElementById('step-menu').classList.add('hidden');
+            document.getElementById('step-data').classList.remove('hidden');
+        }
+
+        // Jalur Flowchart: Input Valid?
+        function validasiData() {
+            const nama = document.getElementById('nama').value;
+            const usia = document.getElementById('usia').value;
+            if (nama !== "" && usia !== "") {
+                document.getElementById('step-data').classList.add('hidden');
+                document.getElementById('step-gejala').classList.remove('hidden');
+            } else {
+                alert("Input tidak valid! Nama dan Usia harus diisi.");
+            }
+        }
+
+        // Jalur Flowchart: Skala = 5?
+        function cekSkala() {
+            const skala = document.getElementById('skala').value;
+            const usia = parseInt(document.getElementById('usia').value);
+
+            if (skala == "5") {
+                keIGD("Skala Nyeri Tinggi");
+            } else {
+                tentukanPoli(usia);
+            }
+        }
+
+        // Jalur Flowchart: Usia > 50 -> Status Prioritas/Umum -> Tentukan Poli
+        function tentukanPoli(usia) {
+            document.getElementById('step-gejala').classList.add('hidden');
+            document.getElementById('step-selesai').classList.remove('hidden');
+
+            let status = "";
+            let poli = "";
+            let no = Math.floor(Math.random() * 50) + 1;
+
+            if (usia > 50) {
+                status = "STATUS: PRIORITAS";
+                poli = "Poli Lansia";
+                no = "L-" + no;
+            } else if (usia < 15) {
+                status = "STATUS: UMUM";
+                poli = "Poli Anak";
+                no = "A-" + no;
+            } else {
+                status = "STATUS: UMUM";
+                poli = "Poli Umum";
+                no = "U-" + no;
+            }
+
+            document.getElementById('label-status').innerText = status;
+            document.getElementById('no-antrian').innerText = no;
+            document.getElementById('tujuan-poli').innerText = "Tujuan: " + poli;
+        }
+    </script>
+</body>
+<!-- </html> -->
